@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
     y_train = np.array(y_train)
     y_valid = np.array(y_valid)
-    y_test_array = np.array(y_test)
+    #y_test_array = np.array(y_test)
     print(f'y_train shape: {y_train.shape}')
     print(f'y_valid shape: {y_valid.shape}')
     #print(f'y_test shape: {y_test_array.shape}')
