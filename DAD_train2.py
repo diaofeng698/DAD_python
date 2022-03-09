@@ -4,7 +4,7 @@ import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 import tensorflow as tf
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
@@ -18,92 +18,75 @@ from wandb.keras import WandbCallback
 '''
 **************************************************
 Operating Instructions:
-1 Configure weights_folder for saving model weights
-2 Configure driver_file, dataset_folder for reading datasets and labels
-3 Configure map for classification and label mapping
-4 Configure classes for classification number
-5 Configure driver_valid_list  driver_test_list for dataset split
-6 Configure early stopping patience 
-7 Configure epochs 
+1 Configure wandb project name
+2 Configure batch_size, training epochs, stopping_patience, classes in wandb
+3 Configure weights_folder for saving model weights
+4 Configure driver_file, dataset_folder for reading datasets and labels
+5 Configure map for classification and label mapping
+6 Configure driver_valid_list  driver_test_list for dataset split
 ***************************************************
 '''
 
 if __name__ == '__main__':
     root = os.getcwd()
-    
 # __________________________Wandb Online Version Train Visualization_________________________
 
-    wandb.init(project="MobileNet_Classification")
+# 1 Configure wandb project name
+    wandb.init(project="MobileNet_DAD_1")
 
+# 2 Configure learning rate, batch_size, training epochs, stopping_patience, classes
     config = wandb.config
     config.learning_rate = 0.0015
-    config.batch_size = 64
-    config.epochs = 500
+    config.batch_size = 32
+    config.epochs = 100
     config.stopping_patience = 10
-    config.classes = 10
-    
-# 1 Configure weights_folder for saving model weights
+    config.classes = 6
 
-    weights_folder = 'weights'
+# 3 Configure weights_folder for saving model weights
+    weights_folder = 'DAD_weights_1'
+
     save_weights_path = os.path.join(root, weights_folder)
     if not os.path.exists(save_weights_path):
         os.mkdir(save_weights_path)
     print('save model path:', save_weights_path)
 
-    driver_file = 'driver_imgs_list.csv'
-    dataset_folder = 'SF_dataset'
-    
-# 2 Configure driver_file, dataset_folder for reading datasets and labels
+# 4 Configure driver_file, dataset_folder for reading datasets and labels
+    dataset_folder = 'train_dataset_1'
 
-    driver_details = pd.read_csv(os.path.join(root, dataset_folder, driver_file), na_values='na')
-    driver_details.set_index('img')
-    print('driver list detail: ', driver_details.head(5))
-    driver_list = list(driver_details['subject'].unique())
-    print('driver list:', driver_list)
-    print('total drivers:', len(driver_list))
-    print(driver_details.groupby(by=['subject'])['img'].count())
-    class_distribution = driver_details.groupby(by=['classname'])['img'].count()
-    img_quantity = list(class_distribution.values)
-    print('img amount of every class: ', img_quantity)
-
-
-    map = {0: 'safe drive', 1: 'text-right', 2: 'phone-talk-right', 3: 'text-left',
-           4: 'phone-talk-left', 5: 'operate-radio', 6: 'drink', 7: 'reach-behind',
-           8: 'hair&makeup', 9: 'talk-passenger'}
-# 3 Configure map for classification and label mapping
+# 5 Configure map_list for classification and label mapping
+    map_list = {0: 'safe_driving', 1: 'eating', 2: 'drinking', 3: 'smoking',
+                4: 'phone_interaction', 5: 'other_activity'}
 
     train_image = []
     classes = config.classes
-# 4 Configure classes for classification number
 
     for folder_index in range(classes):
         class_folder = 'c' + str(folder_index)
         print(f'now we are in the folder {class_folder}')
 
-        imgs_folder_path = os.path.join(root, dataset_folder, 'train', class_folder)
-        imgs = os.listdir(imgs_folder_path)
+        imgs_folder_path = os.path.join(root, dataset_folder, class_folder)
+        imgs_list = os.listdir(imgs_folder_path)
 
-        for img_index in tqdm(range(len(imgs))):
-            img_path = os.path.join(imgs_folder_path, imgs[img_index])
+        for img_name in tqdm(imgs_list):
+            img_path = os.path.join(imgs_folder_path, img_name)
             img = cv2.imread(img_path, 0)
             img = cv2.resize(img, (224, 224))
             img = np.repeat(img[..., np.newaxis], 3, -1)
             label = folder_index
-            driver = driver_details[driver_details['img'] == imgs[img_index]]['subject'].values[0]
-
+            driver = img_name.split('_')[0]
             train_image.append([img, label, driver])
 
     print('total images:', len(train_image))
-    save_img_name = map[train_image[-1][1]] + '_driver' + train_image[-1][-1]  + '.jpg'
+    save_img_name = map_list[train_image[-1][1]] + '_driver_' + train_image[-1][-1] + '.jpg'
     cv2.imwrite(save_img_name, train_image[-1][0])
 
 
 # ______________________Splitting the train, valid and test dataset_________________________
 
+# 6 Configure driver_valid_list  driver_test_list for dataset split
     random.shuffle(train_image)
-    driver_valid_list = {'p015', 'p022', 'p056'}
-    driver_test_list = {'p050'}
-# 5 Configure driver_valid_list  driver_test_list for dataset split
+    driver_valid_list = {'tinghao'}
+    driver_test_list = {}
 
     X_train, y_train = [], []
     X_valid, y_valid = [], []
@@ -111,28 +94,28 @@ if __name__ == '__main__':
 
     for image, label, driver in train_image:
         if driver in driver_test_list:
-          X_test.append(image)
-          y_test.append(label)
+            X_test.append(image)
+            y_test.append(label)
         elif driver in driver_valid_list:
-          X_valid.append(image)
-          y_valid.append(label)
+            X_valid.append(image)
+            y_valid.append(label)
         else:
             X_train.append(image)
             y_train.append(label)
 
     X_train = np.array(X_train).reshape(-1, 224, 224, 3)
     X_valid = np.array(X_valid).reshape(-1, 224, 224, 3)
-    X_test_array = np.array(X_test).reshape(-1, 224, 224, 3)
+    #X_test_array = np.array(X_test).reshape(-1, 224, 224, 3)
     print(f'X_train shape: {X_train.shape}')
     print(f'X_valid shape: {X_valid.shape}')
-    print(f'X_test shape: {X_test_array.shape}')
+    #print(f'X_test shape: {X_test_array.shape}')
 
     y_train = np.array(y_train)
     y_valid = np.array(y_valid)
     y_test_array = np.array(y_test)
     print(f'y_train shape: {y_train.shape}')
     print(f'y_valid shape: {y_valid.shape}')
-    print(f'y_test shape: {y_test_array.shape}')
+    #print(f'y_test shape: {y_test_array.shape}')
 
 # ___________________________Build Model_____________________________________
 
@@ -140,8 +123,8 @@ if __name__ == '__main__':
     # imports the mobilenet model and discards the last 1000 neuron layer.
     x = base_model.output
     x = GlobalAveragePooling2D()(x)
-    preds = Dense(config.classes, activation='softmax')(x)  # final layer with softmax activation
-    model = tf.keras.Model(inputs=base_model.input, outputs=preds)
+    prediction = Dense(config.classes, activation='softmax')(x)  # final layer with softmax activation
+    model = tf.keras.Model(inputs=base_model.input, outputs=prediction)
     #print(model.summary())
 
 # ___________________________Model Train_______________________________________
@@ -151,7 +134,6 @@ if __name__ == '__main__':
     model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=[acc])
     checkpointer = ModelCheckpoint(filepath=save_weights_path, monitor='val_loss', verbose=1, save_best_only=True, mode='min')
     earlystopper = EarlyStopping(monitor='val_loss', patience=config.stopping_patience, verbose=1, min_delta=0.001, mode='min')
-# 6 Configure early stopping patience 
 
     datagen = ImageDataGenerator(
         rotation_range=10,
@@ -161,8 +143,7 @@ if __name__ == '__main__':
 
     # Fits the model on batches with real-time data augmentation:
     mobilenet_history = model.fit(train_data_generator, steps_per_epoch=len(X_train) / config.batch_size, callbacks=[checkpointer, earlystopper,WandbCallback()],
-                                            epochs=config.epochs, verbose=1, validation_data=(X_valid, y_valid))
-# 7 Configure epochs
+                                  epochs=config.epochs, verbose=1, validation_data=(X_valid, y_valid))
 
 # __________________________Train Visualization_________________________
 
@@ -184,7 +165,7 @@ if __name__ == '__main__':
     # plt.legend(['training', 'validation'], loc='lower right')
     # plt.savefig('train_accuracy.jpg')
 
-
+'''
 # ____________________________ Evaluate on test dataset_______________________________
     loss, acc = model.evaluate(X_test_array, y_test_array)
     print(f'last epoch loss: {loss}')
@@ -194,6 +175,8 @@ if __name__ == '__main__':
     loss, acc = model_load.evaluate(X_test_array, y_test_array)
     print(f'best loss: {loss}')
     print(f'best test accuracy:{acc:.2%}')
+'''
+
 
 
 
