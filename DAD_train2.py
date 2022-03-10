@@ -32,7 +32,7 @@ if __name__ == '__main__':
 # __________________________Wandb Online Version Train Visualization_________________________
 
 # 1 Configure wandb project name
-    #wandb.init(project="MobileNet_DAD_1")
+    wandb.init(project="MobileNet_DAD_1")
 
 # 2 Configure learning rate, batch_size, training epochs, stopping_patience, classes
     config = wandb.config
@@ -50,8 +50,7 @@ if __name__ == '__main__':
     print('save model path:', save_weights_path)
 
 # 4 Configure driver_file, dataset_folder for reading datasets and labels
-    #dataset_folder = 'train_dataset_1'
-    dataset_folder = 'train_dataset_test'
+    dataset_folder = 'train_dataset_1'
     dataset_route = os.path.join(root, dataset_folder)
 
 # 5 Configure map_list for classification and label mapping
@@ -60,7 +59,6 @@ if __name__ == '__main__':
     class_to_index = {'safe':0, 'eat':1, 'drink':2, 'smoke':3, 'phone':4, 'other':5}
 
     train_image = []
-    #classes = config.classes
     classes_list = os.listdir(dataset_route)
 
     for class_name in classes_list:
@@ -106,17 +104,17 @@ if __name__ == '__main__':
 
     X_train = np.array(X_train).reshape(-1, 224, 224, 3)
     X_valid = np.array(X_valid).reshape(-1, 224, 224, 3)
-    #X_test_array = np.array(X_test).reshape(-1, 224, 224, 3)
+    X_test_array = np.array(X_test).reshape(-1, 224, 224, 3)
     print(f'X_train shape: {X_train.shape}')
     print(f'X_valid shape: {X_valid.shape}')
-    #print(f'X_test shape: {X_test_array.shape}')
+    print(f'X_test shape: {X_test_array.shape}')
 
     y_train = np.array(y_train)
     y_valid = np.array(y_valid)
-    #y_test_array = np.array(y_test)
+    y_test_array = np.array(y_test)
     print(f'y_train shape: {y_train.shape}')
     print(f'y_valid shape: {y_valid.shape}')
-    #print(f'y_test shape: {y_test_array.shape}')
+    print(f'y_test shape: {y_test_array.shape}')
 
 # ___________________________Build Model_____________________________________
 
