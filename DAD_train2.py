@@ -32,7 +32,7 @@ if __name__ == '__main__':
 # __________________________Wandb Online Version Train Visualization_________________________
 
 # 1 Configure wandb project name
-    wandb.init(project="MobileNet_DAD_1")
+    #wandb.init(project="MobileNet_DAD_1")
 
 # 2 Configure learning rate, batch_size, training epochs, stopping_patience, classes
     config = wandb.config
@@ -40,10 +40,9 @@ if __name__ == '__main__':
     config.batch_size = 32
     config.epochs = 100
     config.stopping_patience = 10
-    config.classes = 6
 
 # 3 Configure weights_folder for saving model weights
-    weights_folder = 'DAD_weights_1'
+    weights_folder = 'DAD_weights_2'
 
     save_weights_path = os.path.join(root, weights_folder)
     if not os.path.exists(save_weights_path):
@@ -51,20 +50,22 @@ if __name__ == '__main__':
     print('save model path:', save_weights_path)
 
 # 4 Configure driver_file, dataset_folder for reading datasets and labels
-    dataset_folder = 'train_dataset_1'
+    #dataset_folder = 'train_dataset_1'
+    dataset_folder = 'train_dataset_test'
+    dataset_route = os.path.join(root, dataset_folder)
 
 # 5 Configure map_list for classification and label mapping
-    map_list = {0: 'safe_driving', 1: 'eating', 2: 'drinking', 3: 'smoking',
-                4: 'phone_interaction', 5: 'other_activity'}
+    index_to_class = {0: 'safe_driving', 1: 'eating', 2: 'drinking', 3: 'smoking',
+                      4: 'phone_interaction', 5: 'other_activity'}
+    class_to_index = {'safe':0, 'eat':1, 'drink':2, 'smoke':3, 'phone':4, 'other':5}
 
     train_image = []
-    classes = config.classes
+    #classes = config.classes
+    classes_list = os.listdir(dataset_route)
 
-    for folder_index in range(classes):
-        class_folder = 'c' + str(folder_index)
-        print(f'now we are in the folder {class_folder}')
-
-        imgs_folder_path = os.path.join(root, dataset_folder, class_folder)
+    for class_name in classes_list:
+        print(f'now we are in the folder {class_name}')
+        imgs_folder_path = os.path.join(root, dataset_folder, class_name)
         imgs_list = os.listdir(imgs_folder_path)
 
         for img_name in tqdm(imgs_list):
@@ -72,12 +73,12 @@ if __name__ == '__main__':
             img = cv2.imread(img_path, 0)
             img = cv2.resize(img, (224, 224))
             img = np.repeat(img[..., np.newaxis], 3, -1)
-            label = folder_index
+            label = class_to_index[class_name]
             driver = img_name.split('_')[0]
             train_image.append([img, label, driver])
 
     print('total images:', len(train_image))
-    save_img_name = map_list[train_image[-1][1]] + '_driver_' + train_image[-1][-1] + '.jpg'
+    save_img_name = index_to_class[train_image[-1][1]] + '_driver_' + train_image[-1][-1] + '.jpg'
     cv2.imwrite(save_img_name, train_image[-1][0])
 
 
@@ -165,7 +166,7 @@ if __name__ == '__main__':
     # plt.legend(['training', 'validation'], loc='lower right')
     # plt.savefig('train_accuracy.jpg')
 
-'''
+
 # ____________________________ Evaluate on test dataset_______________________________
     loss, acc = model.evaluate(X_test_array, y_test_array)
     print(f'last epoch loss: {loss}')
@@ -175,7 +176,7 @@ if __name__ == '__main__':
     loss, acc = model_load.evaluate(X_test_array, y_test_array)
     print(f'best loss: {loss}')
     print(f'best test accuracy:{acc:.2%}')
-'''
+
 
 
 
