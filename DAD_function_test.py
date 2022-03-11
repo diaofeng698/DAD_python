@@ -25,13 +25,16 @@ def output_alert(alert_result, longest_frame, alert_conf, map):
 
 if __name__ == '__main__':
     root = os.getcwd()
-    save_test_name = 'test_result6.txt'
+    save_test_name = 'test_result.txt'
 # 更改结果保存文件名称
     save_test_folder = 'function_test_result'
     save_test_path = os.path.join(root, save_test_folder)
     if not os.path.exists(save_test_path):
         os.mkdir(save_test_path)
     save_test_route = os.path.join(save_test_path, save_test_name)
+
+    if os.path.exists(save_test_route):
+        os.remove(save_test_route)
 
     model_path = 'weights_gray'
 # 配置模型路径 model loading path
