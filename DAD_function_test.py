@@ -25,7 +25,7 @@ def output_alert(alert_result, longest_frame, alert_conf, map):
 
 if __name__ == '__main__':
     root = os.getcwd()
-    save_test_name = 'test_result6.txt'
+    save_test_name = 'test_result7.txt'
 # 更改结果保存文件名称
     save_test_folder = 'function_test_result'
     save_test_path = os.path.join(root, save_test_folder)
@@ -62,21 +62,24 @@ if __name__ == '__main__':
     warning_status = False
 
     # 构造测试数据队列
+    time_list = [('safe_driving', 5), ('eating', 4), ('drinking', 3), ('smoking', 2),
+                 ('phone_interaction', 11), ('other_activity', 60)]
+    print(f'activity last time dict is {time_list}')
 
-    time_dict = {'safe_driving': 5, 'eating': 4, 'drinking': 3, 'smoking': 2, 'phone_interaction': 11}
-    time_dict['other_activity'] = buffer_time - sum(time_dict.values())
-    #print(f'activity last time dict is {time_dict}')
-
-    total_test_time = 60  # 总测试时间60s
+    with open(save_test_route, 'a') as file:
+        file.write(str(time_list) + '\n')
 
     test_queue = []
     record = ''
-    for _ in range((total_test_time // buffer_time)):
-        for item_class, item_time in time_dict.items():
-            test_queue.extend([class_to_index[item_class]] * item_time * fps)
-            record += f'{item_class} lasts for {item_time}s, '
-        print(f'in {buffer_time}, {record}')
-        record = ''
+
+    for item in time_list:
+        test_queue.extend([class_to_index[item[0]]] * item[1] * fps)
+        record += f'{item[0]} lasts for {item[1]}s, '
+    record_message = f'in {sum([item[1] for item in time_list])}, {record}'
+    print(record_message)
+    with open(save_test_route, 'a') as file:
+        file.write(record_message + '\n')
+
     frame_index = 1
     for frame_now in test_queue:
         state_now = frame_now
@@ -105,7 +108,8 @@ if __name__ == '__main__':
                 # 如果出现相同时长，按mobile phone > eating > drinking> smoking 优先级选取
 
                 multi_activity_buffer = {k: v for k, v in buffer.items() if index_to_class[k] in alert_list}
-                max_time = max([item[0] for item in multi_activity_buffer.values()])
+                if len(multi_activity_buffer) != 0:
+                    max_time = max([item[0] for item in multi_activity_buffer.values()])
                 if max_time >= alert_frame:
                     print('OK')
                     alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
