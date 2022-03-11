@@ -136,7 +136,8 @@ if __name__ == '__main__':
                 # 如果出现相同时长，按mobile phone > eating > drinking> smoking 优先级选取
 
                 multi_activity_buffer = {k:v for k,v in buffer.items() if index_to_class[k] in alert_list}
-                max_time = max([item[0] for item in multi_activity_buffer.values()])
+                if len(multi_activity_buffer) != 0:
+                    max_time = max([item[0] for item in multi_activity_buffer.values()])
                 if max_time >= alert_frame:
                     alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
                     # initial input lowest priority class to sort_buffer
