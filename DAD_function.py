@@ -9,12 +9,36 @@ def load_model(path):
     return tf.keras.models.load_model(path)
 
 
+def sort_buffer(temp_buffer, alert_result, map, longest_frame=0, alert_conf = 0):
+    for item_class, (item_frame, item_conf) in temp_buffer.items():
+        if item_frame > longest_frame:
+            longest_frame = item_frame
+            alert_result = item_class
+            alert_conf = item_conf
+        elif item_frame == longest_frame:
+            item_index = alert_list.index(map[item_class])
+            longest_frame_index = alert_list.index(map[alert_result])
+            if item_index > longest_frame_index:
+                alert_result = item_class
+                alert_conf = item_conf
+    return alert_result, longest_frame, alert_conf
+
+
+def output_alert(alert_result, longest_frame, alert_conf, map):
+    average_alert_conf = round(alert_conf / longest_frame, 2)
+    warning_status = True
+    alert_img_text = f'alert:{map[alert_result]}, conf:{average_alert_conf} last more than {alert_time}s'
+    return warning_status, alert_img_text
+
+
 if __name__ == '__main__':
 
     model_path = 'weights_gray'
 # 配置模型路径 model loading path
-    map_list = {0: 'safe_driving', 1: 'eating', 2: 'drinking',
-                3: 'smoking', 4: 'phone_interaction', 5: 'other_activity'}
+    index_to_class = {0: 'safe_driving', 1: 'eating', 2: 'drinking',
+                      3: 'smoking', 4: 'phone_interaction', 5: 'other_activity'}
+
+    class_to_index = {v: k for k, v in index_to_class.items()}
 
     alert_list = ['smoking', 'drinking', 'eating', 'phone_interaction']
     safe_mode = 0  # 默认安全驾驶是 分类 0, safe driving is 0 by default
@@ -49,16 +73,12 @@ if __name__ == '__main__':
     buffer_frame = buffer_time * fps
     print(f'{reset_frame} frames in reset time, {alert_frame} frames in alert time, {buffer_frame} frames in buffer time')
 
-    classes = 6  # DAD classes number
-    buffer = {k: [0, 0] for k in range(classes)}
-    buffer_list = []
-    print(f'buffer in {buffer_time}s is {buffer}')
+    buffer_list = []  # buffer queue for 30s accumulate
 
     safe_mode_buffer = 0
     state_previous = 0  # 初始化状态为安全驾驶 0, initial state is safe driving
     conf_threshold = 0.5
-    warning_status = False
-    counter = 1  # buffer time counter
+    warning_status = False # initial no warning
 
     model = load_model(model_path)
     dummy_img = cv2.imread('dummy_img.jpg')
@@ -92,116 +112,55 @@ if __name__ == '__main__':
         output_text = f'current frame is {frame_now}, infer result is {map[gray_img_pred]}, infer time is {time_cost}'
         print(output_text)
 
-        img_text = f'P: {map_list[gray_img_pred]}, conf: {round(conf, 2)}'
+        img_text = f'P: {index_to_class[gray_img_pred]}, conf: {round(conf, 2)}'
 
-        if counter <= buffer_frame:  # 1-12s, DAD: 1-30s
+        if conf >= conf_threshold:  # ? 是否要添加置信度过滤 相当于跳过置信度低的一帧图片
+            buffer_list.append((state_now, conf))
+            if len(buffer_list) == buffer_frame:
+                buffer_list = buffer_list[1:]
+            # 建立与buffer_list对应的buffer
+            buffer = {}  # buffer for sort out longest time and judge >= 10s
+            for (item_class, item_conf) in buffer_list:
+                if item_class not in buffer:
+                    buffer[item_class] = (1, item_conf)
+                else:
+                    buffer[item_class][0] += 1
+                    buffer[item_class][1] += conf
+
             if state_now != safe_mode:
-                if conf >= conf_threshold:
-                    safe_mode_buffer = 0
-                    buffer[state_now][0] += 1
-                    buffer[state_now][1] += conf
-                    buffer_list.append((state_now, conf))
-                    # alert 模块, alert module
-                    # 选取最大时长动作发出alert, 如果出现相同时长，按phone_interaction > eating > drinking> smoking 优先级选取
-                    # choose the longest time activity to alert, if there are two equal longest activities,
-                    # sort by the priority phone_interaction > eating > drinking> smoking
-                    longest_frame = 0
-                    alert_result = 3  # 默认初始值为优先级最低的 'smoking', default value is the lowest priority 'smoking' class
-                    alert_conf = 0
-                    for item_class, (item_frame, item_conf) in buffer.items():
-                        if item_frame >= alert_frame:
-                            if map_list[item_class] in alert_list:
-                                if item_frame > longest_frame:
-                                    longest_frame = item_frame
-                                    alert_result = map_list[item_class]
-                                    alert_conf = item_conf
-                                elif item_frame == longest_frame:
-                                    item_index = alert_list.index(map_list[item_class])
-                                    longest_frame_index = alert_list.index(map_list[item_class])
-                                    if item_index >= longest_frame_index:
-                                        alert_result = map_list[item_class]
-                                        alert_conf = item_conf
-                    if longest_frame != 0:
-                        average_alert_conf = round(alert_conf / longest_frame, 2)
-                        warning_status = True
-                        alert_img_text = f'alert:{alert_result}, conf:{average_alert_conf} last more than {alert_time}s'
-                        print(alert_img_text + ' ' + output_text)
+                safe_mode_buffer = 0
+                # alert 模块
+                # 选取>=10s 最大时长动作发出alert
+                # 如果<10s, 累加alert 动作时长， 看是否>=10s
+                # 如果出现相同时长，按mobile phone > eating > drinking> smoking 优先级选取
 
-                    state_previous = state_now
+                multi_activity_buffer = {k:v for k,v in buffer.items() if index_to_class[k] in alert_list}
+                max_time = max([item[0] for item in multi_activity_buffer.values()])
+                if max_time >= alert_frame:
+                    alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                    # initial input lowest priority class to sort_buffer
+                    warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
+                    print(alert_img_text + ' ' + output_text)
+                else:
+                    total_time = sum([item[0] for item in multi_activity_buffer.values()])
+                    if total_time >= alert_frame:
+                        alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                        # initial input lowest priority class to sort_buffer
+                        warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
+                        print(alert_img_text + ' ' + output_text)
             else:
-                # 解除warning 判断模块, release warning module
-                if conf >= conf_threshold:
-                    if state_previous == safe_mode:
-                        safe_mode_buffer += 1
-                    else:
-                        safe_mode_buffer = 1
-                    if safe_mode_buffer >= reset_frame:
-                        if warning_status is True:
-                            warning_status = False
-                            print('safe driving mode last for 2s, release warning')
-                        safe_mode_buffer -= 1  # 防止一直累加 上溢出
-                        buffer = {k: [0, 0] for k in range(classes)}
-                        buffer_list = []
-                        counter = 1  # reset 回到30s 内重新累加
-                    state_previous = state_now
-
-            counter += 1
-
-        else:  # 第31s...，滑动窗口为1个frame, 31s, sliding window every 1 frame
-            if state_now == safe_mode:
-                # 解除warning 判断模块, release warning module
-                if conf >= conf_threshold :
-                    if state_previous == safe_mode:
-                        safe_mode_buffer += 1
-                    else:
-                        safe_mode_buffer = 1
-                    if safe_mode_buffer >= reset_frame:
-                        if warning_status is True:
-                            warning_status = False
-                            print('safe driving mode last for 2s, release warning')
-                        safe_mode_buffer -= 1  # 防止一直累加 上溢出， in case overflow
-                        buffer = {k: [0, 0] for k in range(classes)}
-                        buffer_list = []
-                        counter = 1  # reset 回到30s内重新循环，reset back to 30s loop
-                    state_previous = state_now
-            else:  # 如果第31s不是safe mode,没有被reset 就一直滑动下去, if 31s is not safe mode, continue sliding
-                if conf >= conf_threshold:
-                    safe_mode_buffer = 0
-                    buffer_list.append((state_now, conf))
-                    buffer_list = buffer_list[1:]  # buffer_list 首出 尾进， 滑动窗口为1, buffer list head out, end in
-                    buffer = {k: [0, 0] for k in range(classes)}
-                    for item in buffer_list:
-                        item_class = item[0]
-                        item_conf = item[1]
-                        buffer[item_class][0] += 1
-                        buffer[item_class][1] += item_conf
-                    # alert 模块, alert module
-                    # 选取最大时长动作发出alert, 如果出现相同时长，按phone_interaction > eating > drinking> smoking 优先级选取
-                    # choose the longest time activity to alert, if there are two equal longest activities,
-                    # sort by the priority phone_interaction > eating > drinking> smoking
-                    longest_frame = 0
-                    alert_result = 3  # 默认初始值为优先级最低的 'smoking', default value is the lowest priority 'smoking' class
-                    alert_conf = 0
-                    for item_class, (item_frame, item_conf) in buffer.items():
-                        if item_frame >= alert_frame:
-                            if map_list[item_class] in alert_list:
-                                if item_frame > longest_frame:
-                                    longest_frame = item_frame
-                                    alert_result = map_list[item_class]
-                                    alert_conf = item_conf
-                                elif item_frame == longest_frame:
-                                    item_index = alert_list.index(map_list[item_class])
-                                    longest_frame_index = alert_list.index(map_list[item_class])
-                                    if item_index >= longest_frame_index:
-                                        alert_result = map_list[item_class]
-                                        alert_conf = item_conf
-                    if longest_frame != 0:
-                        average_alert_conf = round(alert_conf / longest_frame, 2)
-                        warning_status = True
-                        alert_img_text = f'alert:{alert_result}, conf:{average_alert_conf} last more than {alert_time}s'
-                        print(alert_img_text + ' ' + output_text)
-
-                    state_previous = state_now
+                if state_previous == safe_mode:
+                    safe_mode_buffer += 1
+                else:
+                    safe_mode_buffer = 1
+                if safe_mode_buffer >= reset_frame:
+                    if warning_status is True:
+                        warning_status = False
+                        release_message = f'safe driving mode last for 2s, release warning'
+                        img_text = release_message + img_text
+                        print(release_message + ' ' + output_text)
+                    safe_mode_buffer -= 1  # 防止一直累加 上溢出
+            state_previous = state_now
 
         cv2.putText(frame, img_text, (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
         if warning_status is True:
@@ -211,7 +170,8 @@ if __name__ == '__main__':
     cap.release()
     save_video.release()
 
-    print('Activity detection video is saved')
+print('pred video is saved')
+
 
 
 
