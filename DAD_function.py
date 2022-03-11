@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     safe_mode_buffer = 0
     state_previous = 0  # 初始化状态为安全驾驶 0, initial state is safe driving
-    conf_threshold = 0.5
+    conf_threshold = 0.0
     warning_status = False # initial no warning
 
     model = load_model(model_path)
@@ -114,7 +114,8 @@ if __name__ == '__main__':
 
         img_text = f'P: {index_to_class[gray_img_pred]}, conf: {round(conf, 2)}'
 
-        if conf >= conf_threshold:  # ? 是否要添加置信度过滤 相当于跳过置信度低的一帧图片
+        # TODO:是否要添加置信度过滤 相当于跳过置信度低的一帧图片
+        if conf >= conf_threshold:
             buffer_list.append((state_now, conf))
             if len(buffer_list) == buffer_frame:
                 buffer_list = buffer_list[1:]

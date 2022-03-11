@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     safe_mode_buffer = 0
     state_previous = 0  # 初始化状态为安全驾驶 0, initial state is safe driving
-    conf_threshold = 0.5
+    conf_threshold = 0.0
     warning_status = False
 
     # 构造测试数据队列
@@ -83,8 +83,8 @@ if __name__ == '__main__':
         conf = 1  # conf 其实可以随机生成一个值 在(0, 1) 之间
         output_text = f'current frame No.is {frame_index}, frame is {index_to_class[state_now]}'
         print(output_text)
-
-        if conf >= conf_threshold:  # ? 是否要添加置信度过滤 相当于跳过置信度低的一帧图片
+        # TODO: 是否要添加置信度过滤 相当于跳过置信度低的一帧图片
+        if conf >= conf_threshold:
             buffer_list.append((state_now, conf))
             if len(buffer_list) == buffer_frame:
                 buffer_list = buffer_list[1:]
