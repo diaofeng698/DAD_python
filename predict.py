@@ -61,11 +61,20 @@ model = tf.keras.models.load_model('./weights_gray')
 #     start_time = time.time() * 1000
 #     img_name = "./drive-download-20220215T074848Z-001/" + item
 #     img = cv2.imread(img_name)
-    #img = color.rgb2gray(img)
-    # img = img[50:, 120:-50]
+#img = color.rgb2gray(img)
+# img = img[50:, 120:-50]
 
-img = cv2.imread("dummy_img.jpg")
+img = cv2.imread("img.png")
+print(img.shape)
 
+resized_img = cv2.resize(img, (224, 224))
+print(resized_img.shape)
+
+gray_img = cv2.cvtColor(resized_img, cv2.COLOR_BGR2GRAY)
+print(gray_img.shape)
+input_img = np.repeat(gray_img[..., np.newaxis], 3, -1)
+input_img = np.array(input_img).reshape(-1, 224, 224, 3)
+print(input_img.shape)
 # while True:
 #     ret, img = video.read()
 #
@@ -74,11 +83,12 @@ img = cv2.imread("dummy_img.jpg")
 #         if cv2.waitKey(1) & 0xFF == ord('q'):  # 按键盘 'q' 退出
 #             break
 #
-img = cv2.resize(img, (224, 224))
-# img = tf.expand_dims(img, axis=0)
-img = np.array(img).reshape(-1, 224, 224, 3)
+# img = cv2.resize(img, (224, 224))
+# # img = tf.expand_dims(img, axis=0)
+# img = np.array(img).reshape(-1, 224, 224, 3)
+# print(img[0][0][0][0])
 
-test_pred = model.predict(img)
+test_pred = model.predict(input_img)
 print(test_pred)
 # end_time = time.time() * 1000
 # dur_time = end_time - start_time

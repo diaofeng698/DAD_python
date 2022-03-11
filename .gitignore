@@ -1,12 +1,11 @@
-*.jpg
-*.mp4
-*.avi
 .vscode/
 .idea/
 build/
 src/build/
 wandb/
 SF_dataset
+video/
+img/
 # Prerequisites
 *.d
 

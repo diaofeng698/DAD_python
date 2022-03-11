@@ -88,23 +88,24 @@ while cap.isOpened():
 
     time_start = time.time()
 
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    size = img.shape
-    h = size[0]
-    w = size[1]
-    frame = copy.deepcopy(img)
-    
-    for i in range(h):
-      for j in range(w):
-          frame[i,w-1-j] = img[i,j]
-      
-    
+    # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # size = img.shape
+    # h = size[0]
+    # w = size[1]
+    # frame = copy.deepcopy(img)
+    # 
+    # for i in range(h):
+    #   for j in range(w):
+    #       frame[i,w-1-j] = img[i,j]
+
+    frame = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray_img = cv2.resize(frame, (224, 224))
     gray_img = np.repeat(gray_img[..., np.newaxis], 3, -1)
  
 
     # ????? C++?numpy????? ??opencv ????
-    
+    print("----------------------")
+    print(gray_img[np.newaxis, ...].shape)
     gray_img_infer = gray_model_load.predict(gray_img[np.newaxis, ...])
     gray_img_pred = np.argmax(gray_img_infer)
     # ??????? np.argmax
