@@ -9,25 +9,25 @@ def load_model(path):
     return tf.keras.models.load_model(path)
 
 
-def sort_buffer(temp_buffer, alert_result, longest_frame=0, alert_conf = 0):
+def sort_buffer(temp_buffer, alert_result, map, longest_frame=0, alert_conf = 0):
     for item_class, (item_frame, item_conf) in temp_buffer.items():
         if item_frame > longest_frame:
             longest_frame = item_frame
-            alert_result = map_list[item_class]
+            alert_result = item_class
             alert_conf = item_conf
         elif item_frame == longest_frame:
             item_index = alert_list.index(map[item_class])
-            longest_frame_index = alert_list.index(map[item_class])
+            longest_frame_index = alert_list.index(map[alert_result])
             if item_index > longest_frame_index:
-                alert_result = map_list[item_class]
+                alert_result = item_class
                 alert_conf = item_conf
     return alert_result, longest_frame, alert_conf
 
 
-def output_alert(alert_result, longest_frame, alert_conf):
+def output_alert(alert_result, longest_frame, alert_conf, map):
     average_alert_conf = round(alert_conf / longest_frame, 2)
     warning_status = True
-    alert_img_text = f'alert:{alert_result}, conf:{average_alert_conf} last more than {alert_time}s'
+    alert_img_text = f'alert:{map[alert_result]}, conf:{average_alert_conf} last more than {alert_time}s'
     return warning_status, alert_img_text
 
 
@@ -35,10 +35,10 @@ if __name__ == '__main__':
 
     model_path = 'weights_gray'
 # 配置模型路径 model loading path
-    map_list = {0: 'safe_driving', 1: 'eating', 2: 'drinking',
-                3: 'smoking', 4: 'phone_interaction', 5: 'other_activity'}
+    index_to_class = {0: 'safe_driving', 1: 'eating', 2: 'drinking',
+                      3: 'smoking', 4: 'phone_interaction', 5: 'other_activity'}
 
-    index_to_class = {v: k for k, v in map_list.items()}
+    class_to_index = {v: k for k, v in index_to_class.items()}
 
     alert_list = ['smoking', 'drinking', 'eating', 'phone_interaction']
     safe_mode = 0  # 默认安全驾驶是 分类 0, safe driving is 0 by default
@@ -74,7 +74,6 @@ if __name__ == '__main__':
     print(f'{reset_frame} frames in reset time, {alert_frame} frames in alert time, {buffer_frame} frames in buffer time')
 
     buffer_list = []  # buffer queue for 30s accumulate
-    buffer = {} # buffer for sort out longest time and judge >= 10s
 
     safe_mode_buffer = 0
     state_previous = 0  # 初始化状态为安全驾驶 0, initial state is safe driving
@@ -113,13 +112,14 @@ if __name__ == '__main__':
         output_text = f'current frame is {frame_now}, infer result is {map[gray_img_pred]}, infer time is {time_cost}'
         print(output_text)
 
-        img_text = f'P: {map_list[gray_img_pred]}, conf: {round(conf, 2)}'
+        img_text = f'P: {index_to_class[gray_img_pred]}, conf: {round(conf, 2)}'
 
         if conf >= conf_threshold:  # ? 是否要添加置信度过滤 相当于跳过置信度低的一帧图片
             buffer_list.append((state_now, conf))
             if len(buffer_list) == buffer_frame:
                 buffer_list = buffer_list[1:]
             # 建立与buffer_list对应的buffer
+            buffer = {}  # buffer for sort out longest time and judge >= 10s
             for (item_class, item_conf) in buffer_list:
                 if item_class not in buffer:
                     buffer[item_class] = (1, item_conf)
@@ -134,19 +134,19 @@ if __name__ == '__main__':
                 # 如果<10s, 累加alert 动作时长， 看是否>=10s
                 # 如果出现相同时长，按mobile phone > eating > drinking> smoking 优先级选取
 
-                multi_activity_buffer = {k:v for k,v in buffer.items() if map_list[k] in alert_list}
-                max_time = max([item[0] for item in multi_activity_buffer.items()])
+                multi_activity_buffer = {k:v for k,v in buffer.items() if index_to_class[k] in alert_list}
+                max_time = max([item[0] for item in multi_activity_buffer.values()])
                 if max_time >= alert_frame:
-                    alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, index_to_class['smoking'])
+                    alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
                     # initial input lowest priority class to sort_buffer
-                    warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf)
+                    warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
                     print(alert_img_text + ' ' + output_text)
                 else:
                     total_time = sum([item[0] for item in multi_activity_buffer.values()])
                     if total_time >= alert_frame:
-                        alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, index_to_class['smoking'])
+                        alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
                         # initial input lowest priority class to sort_buffer
-                        warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf)
+                        warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
                         print(alert_img_text + ' ' + output_text)
             else:
                 if state_previous == safe_mode:
