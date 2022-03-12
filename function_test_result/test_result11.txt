@@ -1,0 +1,57 @@
+[('smoking', 10), ('safe_driving', 1), ('drinking', 0), ('smoking', 0), ('phone_interaction', 0), ('other_activity', 0)]
+in 11, smoking lasts for 10s, safe_driving lasts for 1s, drinking lasts for 0s, smoking lasts for 0s, phone_interaction lasts for 0s, other_activity lasts for 0s, 
+current frame No.is 1, frame is smoking
+current frame No.is 2, frame is smoking
+current frame No.is 3, frame is smoking
+current frame No.is 4, frame is smoking
+current frame No.is 5, frame is smoking
+current frame No.is 6, frame is smoking
+current frame No.is 7, frame is smoking
+current frame No.is 8, frame is smoking
+current frame No.is 9, frame is smoking
+current frame No.is 10, frame is smoking
+current frame No.is 11, frame is smoking
+current frame No.is 12, frame is smoking
+current frame No.is 13, frame is smoking
+current frame No.is 14, frame is smoking
+current frame No.is 15, frame is smoking
+current frame No.is 16, frame is smoking
+current frame No.is 17, frame is smoking
+current frame No.is 18, frame is smoking
+current frame No.is 19, frame is smoking
+current frame No.is 20, frame is smoking
+current frame No.is 21, frame is smoking
+current frame No.is 22, frame is smoking
+current frame No.is 23, frame is smoking
+current frame No.is 24, frame is smoking
+current frame No.is 25, frame is smoking
+current frame No.is 26, frame is smoking
+current frame No.is 27, frame is smoking
+current frame No.is 28, frame is smoking
+current frame No.is 29, frame is smoking
+current frame No.is 30, frame is smoking
+current frame No.is 31, frame is smoking
+current frame No.is 32, frame is smoking
+current frame No.is 33, frame is smoking
+current frame No.is 34, frame is smoking
+current frame No.is 35, frame is smoking
+current frame No.is 36, frame is smoking
+current frame No.is 37, frame is smoking
+current frame No.is 38, frame is smoking
+current frame No.is 39, frame is smoking
+current frame No.is 40, frame is smoking
+current frame No.is 41, frame is smoking
+current frame No.is 42, frame is smoking
+current frame No.is 43, frame is smoking
+current frame No.is 44, frame is smoking
+current frame No.is 45, frame is smoking
+current frame No.is 46, frame is smoking
+current frame No.is 47, frame is smoking
+current frame No.is 48, frame is smoking
+current frame No.is 49, frame is smoking
+single activity alert:smoking, conf:1.0 last longest time in 50 frames current frame No.is 50, frame is smoking
+single activity alert:smoking, conf:1.0 last longest time in 50 frames current frame No.is 51, frame is safe_driving
+single activity alert:smoking, conf:1.0 last longest time in 50 frames current frame No.is 52, frame is safe_driving
+single activity alert:smoking, conf:1.0 last longest time in 50 frames current frame No.is 53, frame is safe_driving
+single activity alert:smoking, conf:1.0 last longest time in 50 frames current frame No.is 54, frame is safe_driving
+single activity alert:smoking, conf:1.0 last longest time in 50 frames current frame No.is 55, frame is safe_driving

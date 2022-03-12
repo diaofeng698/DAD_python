@@ -1,0 +1,162 @@
+[('eating', 10), ('drinking', 20), ('safe_driving', 2), ('smoking', 0), ('phone_interaction', 0), ('other_activity', 0)]
+in 32, eating lasts for 10s, drinking lasts for 20s, safe_driving lasts for 2s, smoking lasts for 0s, phone_interaction lasts for 0s, other_activity lasts for 0s, 
+current frame No.is 1, frame is eating
+current frame No.is 2, frame is eating
+current frame No.is 3, frame is eating
+current frame No.is 4, frame is eating
+current frame No.is 5, frame is eating
+current frame No.is 6, frame is eating
+current frame No.is 7, frame is eating
+current frame No.is 8, frame is eating
+current frame No.is 9, frame is eating
+current frame No.is 10, frame is eating
+current frame No.is 11, frame is eating
+current frame No.is 12, frame is eating
+current frame No.is 13, frame is eating
+current frame No.is 14, frame is eating
+current frame No.is 15, frame is eating
+current frame No.is 16, frame is eating
+current frame No.is 17, frame is eating
+current frame No.is 18, frame is eating
+current frame No.is 19, frame is eating
+current frame No.is 20, frame is eating
+current frame No.is 21, frame is eating
+current frame No.is 22, frame is eating
+current frame No.is 23, frame is eating
+current frame No.is 24, frame is eating
+current frame No.is 25, frame is eating
+current frame No.is 26, frame is eating
+current frame No.is 27, frame is eating
+current frame No.is 28, frame is eating
+current frame No.is 29, frame is eating
+current frame No.is 30, frame is eating
+current frame No.is 31, frame is eating
+current frame No.is 32, frame is eating
+current frame No.is 33, frame is eating
+current frame No.is 34, frame is eating
+current frame No.is 35, frame is eating
+current frame No.is 36, frame is eating
+current frame No.is 37, frame is eating
+current frame No.is 38, frame is eating
+current frame No.is 39, frame is eating
+current frame No.is 40, frame is eating
+current frame No.is 41, frame is eating
+current frame No.is 42, frame is eating
+current frame No.is 43, frame is eating
+current frame No.is 44, frame is eating
+current frame No.is 45, frame is eating
+current frame No.is 46, frame is eating
+current frame No.is 47, frame is eating
+current frame No.is 48, frame is eating
+current frame No.is 49, frame is eating
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 50, frame is eating
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 51, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 52, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 53, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 54, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 55, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 56, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 57, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 58, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 59, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 60, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 61, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 62, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 63, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 64, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 65, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 66, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 67, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 68, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 69, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 70, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 71, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 72, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 73, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 74, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 75, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 76, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 77, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 78, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 79, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 80, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 81, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 82, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 83, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 84, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 85, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 86, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 87, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 88, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 89, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 90, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 91, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 92, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 93, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 94, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 95, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 96, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 97, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 98, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 99, frame is drinking
+single activity alert:eating, conf:1.0 last longest time in 50 frames current frame No.is 100, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 101, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 102, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 103, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 104, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 105, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 106, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 107, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 108, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 109, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 110, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 111, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 112, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 113, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 114, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 115, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 116, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 117, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 118, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 119, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 120, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 121, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 122, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 123, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 124, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 125, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 126, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 127, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 128, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 129, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 130, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 131, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 132, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 133, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 134, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 135, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 136, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 137, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 138, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 139, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 140, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 141, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 142, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 143, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 144, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 145, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 146, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 147, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 148, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 149, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 150, frame is drinking
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 151, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 152, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 153, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 154, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 155, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 156, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 157, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 158, frame is safe_driving
+single activity alert:drinking, conf:1.0 last longest time in 50 frames current frame No.is 159, frame is safe_driving
+safe driving mode last for 10 frames, release warning current frame No.is 160, frame is safe_driving

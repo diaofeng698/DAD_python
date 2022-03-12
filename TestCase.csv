@@ -1,28 +1,28 @@
-﻿Signal Activity,Activity,Time,Activity,Time,Activity,Time,,,,,,,,,,
-,Eating,10s,SafeDriving,2s,,,,,,,,,,,,
-,Drinking,10s,SafeDriving,2s,,,,,,,,,,,,
-,Smoking,10s,SafeDriving,2s,,,,,,,,,,,,
-,PhoneInteraction,10s,SafeDriving,2s,,,,,,,,,,,,
-,Eating,5s,SafeDriving,2s,,,,,,,,,,,,
-,Drinking,5s,SafeDriving,2s,,,,,,,,,,,,
-,Smoking,5s,SafeDriving,2s,,,,,,,,,,,,
-,PhoneInteraction,5s,SafeDriving,2s,,,,,,,,,,,,
-,Eating,10s,SafeDriving,1s,,,,,,,,,,,,
-,Drinking,10s,SafeDriving,1s,,,,,,,,,,,,
-,Smoking,10s,SafeDriving,1s,,,,,,,,,,,,
-,PhoneInteraction,10s,SafeDriving,1s,,,,,,,,,,,,
-,Eating,5s,SafeDriving,1s,,,,,,,,,,,,
-,Drinking,5s,SafeDriving,1s,,,,,,,,,,,,
-,Smoking,5s,SafeDriving,1s,,,,,,,,,,,,
-,PhoneInteraction,5s,SafeDriving,1s,,,,,,,,,,,,
-,Eating,15s,Drinking,15s,SafeDriving,1s,,,,,,,,,,
-,Eating,15s,Drinking,15s,SafeDriving,2s,,,,,,,,,,
-,Eating,20s,Drinking,10s,SafeDriving,1s,,,,,,,,,,
-,Eating,20s,Drinking,10s,SafeDriving,2s,,,,,,,,,,
-,Eating,10s,Drinking,20s,SafeDriving,1s,,,,,,,,,,
-,Eating,10s,Drinking,20s,SafeDriving,2s,,,,,,,,,,
-,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,
-Multiple Activity,Eating,5s,SafeDriving,2s,Drinking,5s,SafeDriving,3s,Smoking,5s,PhoneInteraction,5s,SafeDriving,1s,Drinking,10s
+﻿Signal Activity,Activity,Time,Activity,Time,Activity,Time,,,,,,,,,,,,,,PASS
+,Eating,10s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,Drinking,10s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,Smoking,10s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,PhoneInteraction,10s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,Eating,5s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,Drinking,5s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,Smoking,5s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,PhoneInteraction,5s,SafeDriving,2s,,,,,,,,,,,,,,,,1
+,Eating,10s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,Drinking,10s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,Smoking,10s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,PhoneInteraction,10s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,Eating,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,Drinking,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,Smoking,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,PhoneInteraction,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
+,Eating,15s,Drinking,15s,SafeDriving,1s,,,,,,,,,,,,,,0
+,Eating,15s,Drinking,15s,SafeDriving,2s,,,,,,,,,,,,,,0
+,Eating,20s,Drinking,10s,SafeDriving,1s,,,,,,,,,,,,,,1
+,Eating,20s,Drinking,10s,SafeDriving,2s,,,,,,,,,,,,,,1
+,Eating,10s,Drinking,20s,SafeDriving,1s,,,,,,,,,,,,,,1
+,Eating,10s,Drinking,20s,SafeDriving,2s,,,,,,,,,,,,,,1
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,
+Multiple Activity,Eating,5s,SafeDriving,2s,Drinking,5s,SafeDriving,3s,Smoking,5s,PhoneInteraction,5s,SafeDriving,1s,Drinking,4s,Eating,10s,,1
