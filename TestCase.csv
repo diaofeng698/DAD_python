@@ -15,8 +15,8 @@
 ,Drinking,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
 ,Smoking,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
 ,PhoneInteraction,5s,SafeDriving,1s,,,,,,,,,,,,,,,,1
-,Eating,15s,Drinking,15s,SafeDriving,1s,,,,,,,,,,,,,,0
-,Eating,15s,Drinking,15s,SafeDriving,2s,,,,,,,,,,,,,,0
+,Eating,15s,Drinking,15s,SafeDriving,1s,,,,,,,,,,,,,,1
+,Eating,15s,Drinking,15s,SafeDriving,2s,,,,,,,,,,,,,,1
 ,Eating,20s,Drinking,10s,SafeDriving,1s,,,,,,,,,,,,,,1
 ,Eating,20s,Drinking,10s,SafeDriving,2s,,,,,,,,,,,,,,1
 ,Eating,10s,Drinking,20s,SafeDriving,1s,,,,,,,,,,,,,,1

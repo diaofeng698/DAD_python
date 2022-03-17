@@ -117,7 +117,7 @@ if __name__ == '__main__':
         # TODO:是否要添加置信度过滤 相当于跳过置信度低的一帧图片
         if conf >= conf_threshold:
             buffer_list.append((state_now, conf))
-            if len(buffer_list) == buffer_frame:
+            if len(buffer_list) == buffer_frame +1:
                 buffer_list = buffer_list[1:]
             # 建立与buffer_list对应的buffer
             buffer = {}  # buffer for sort out longest time and judge >= 10s
@@ -151,17 +151,49 @@ if __name__ == '__main__':
                         warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
                         print(alert_img_text + ' ' + output_text)
             else:
+                # Safe Driving Time Accumulate
                 if state_previous == safe_mode:
                     safe_mode_buffer += 1
                 else:
                     safe_mode_buffer = 1
+
                 if safe_mode_buffer >= reset_frame:
                     if warning_status is True:
                         warning_status = False
-                        release_message = f'safe driving mode last for 2s, release warning'
-                        img_text = release_message + img_text
-                        print(release_message + ' ' + output_text)
+                        release_message = f'safe driving mode last for 10 frames, release warning'
+                        output_text = release_message + ' ' + output_text
+                        # print(save_text)
                     safe_mode_buffer -= 1  # 防止一直累加 上溢出
+                else:
+                    if warning_status is True:
+                        # code block
+                        multi_activity_buffer = {
+                            k: v for k, v in buffer.items() if index_to_class[k] in alert_list}
+                        if len(multi_activity_buffer) != 0:
+                            max_time = max(
+                                [item[0] for item in multi_activity_buffer.values()])
+                        if max_time >= alert_frame:
+                            print('OK')
+                            alert_result, longest_frame, alert_conf = sort_buffer(
+                                multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                            # initial input lowest priority class to
+                            # sort_buffer
+                            warning_status, alert_img_text = output_alert(
+                                alert_result, longest_frame, alert_conf, index_to_class)
+                            save_text = 'single activity' + ' ' + alert_img_text
+                        else:
+                            total_time = sum(
+                                [item[0] for item in multi_activity_buffer.values()])
+                            if total_time >= alert_frame:
+                                print('ok')
+                                alert_result, longest_frame, alert_conf = sort_buffer(
+                                    multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                                # initial input lowest priority class to
+                                # sort_buffer
+                                warning_status, alert_img_text = output_alert(
+                                    alert_result, longest_frame, alert_conf, index_to_class)
+                                save_text = 'multi  activity' + ' ' + alert_img_text
+
             state_previous = state_now
 
         cv2.putText(frame, img_text, (50, 240), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
