@@ -69,8 +69,27 @@ if __name__ == '__main__':
 
     # 构造测试数据队列
 
-    activity_time_list = [('eating', 15), ('drinking', 15),('safe_driving', 1), ('drinking', 0), ('safe_driving', 0), (
-        'smoking', 0), ('phone_interaction', 0), ('safe_driving', 0), ('drinking', 0), ('eating', 0)]
+    activity_time_list = [
+        ('eating',
+         15),
+        ('drinking',
+         15),
+        ('safe_driving',
+         1),
+        ('drinking',
+         0),
+        ('safe_driving',
+         0),
+        ('smoking',
+            0),
+        ('phone_interaction',
+         0),
+        ('safe_driving',
+         0),
+        ('drinking',
+         0),
+        ('eating',
+         0)]
     print(f'activity last time dict is {activity_time_list}')
     with open(save_test_route, 'a') as file:
         file.write(str(activity_time_list) + '\n')
@@ -139,10 +158,6 @@ if __name__ == '__main__':
                             alert_result, longest_frame, alert_conf, index_to_class)
                         save_text = 'multi  activity' + ' ' + alert_img_text
             else:
-                if state_previous == safe_mode:
-                    safe_mode_buffer += 1
-                else:
-                    safe_mode_buffer = 1
                 if safe_mode_buffer >= reset_frame:
                     if warning_status is True:
                         warning_status = False
@@ -150,6 +165,41 @@ if __name__ == '__main__':
                         output_text = release_message + ' ' + output_text
                         # print(save_text)
                     safe_mode_buffer -= 1  # 防止一直累加 上溢出
+
+                else:
+                    if state_previous == safe_mode:
+                        safe_mode_buffer += 1
+                    else:
+                        safe_mode_buffer = 1
+                    if warning_status is True:
+                        # code block
+                        multi_activity_buffer = {
+                            k: v for k, v in buffer.items() if index_to_class[k] in alert_list}
+                        if len(multi_activity_buffer) != 0:
+                            max_time = max(
+                                [item[0] for item in multi_activity_buffer.values()])
+                        if max_time >= alert_frame:
+                            print('OK')
+                            alert_result, longest_frame, alert_conf = sort_buffer(
+                                multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                            # initial input lowest priority class to
+                            # sort_buffer
+                            warning_status, alert_img_text = output_alert(
+                                alert_result, longest_frame, alert_conf, index_to_class)
+                            save_text = 'single activity' + ' ' + alert_img_text
+                        else:
+                            total_time = sum(
+                                [item[0] for item in multi_activity_buffer.values()])
+                            if total_time >= alert_frame:
+                                print('ok')
+                                alert_result, longest_frame, alert_conf = sort_buffer(
+                                    multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                                # initial input lowest priority class to
+                                # sort_buffer
+                                warning_status, alert_img_text = output_alert(
+                                    alert_result, longest_frame, alert_conf, index_to_class)
+                                save_text = 'multi  activity' + ' ' + alert_img_text
+
             state_previous = state_now
 
         with open(save_test_route, 'a') as file:
