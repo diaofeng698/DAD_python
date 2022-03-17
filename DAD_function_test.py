@@ -25,7 +25,7 @@ def output_alert(alert_result, longest_frame, alert_conf, map):
 
 if __name__ == '__main__':
     root = os.getcwd()
-    save_test_name = 'test_result17.txt'
+    save_test_name = 'test_result23.txt'
 # 更改结果保存文件名称
     save_test_folder = 'function_test_result'
     save_test_path = os.path.join(root, save_test_folder)
@@ -71,23 +71,23 @@ if __name__ == '__main__':
 
     activity_time_list = [
         ('eating',
-         15),
+         5),
+        ('safe_driving',
+         2),
         ('drinking',
-         15),
+         5),
+        ('safe_driving',
+         3),
+        ('smoking',
+         5),
+        ('phone_interaction',
+         5),
         ('safe_driving',
          1),
         ('drinking',
-         0),
-        ('safe_driving',
-         0),
-        ('smoking',
-            0),
-        ('phone_interaction',
-         0),
-        ('safe_driving',
-         0),
-        ('drinking',
-         0),
+         4),
+        ('eating',
+         10),
         ('eating',
          0)]
     print(f'activity last time dict is {activity_time_list}')
@@ -158,6 +158,12 @@ if __name__ == '__main__':
                             alert_result, longest_frame, alert_conf, index_to_class)
                         save_text = 'multi  activity' + ' ' + alert_img_text
             else:
+                # Safe Driving Time Accumulate
+                if state_previous == safe_mode:
+                    safe_mode_buffer += 1
+                else:
+                    safe_mode_buffer = 1
+
                 if safe_mode_buffer >= reset_frame:
                     if warning_status is True:
                         warning_status = False
@@ -165,12 +171,7 @@ if __name__ == '__main__':
                         output_text = release_message + ' ' + output_text
                         # print(save_text)
                     safe_mode_buffer -= 1  # 防止一直累加 上溢出
-
                 else:
-                    if state_previous == safe_mode:
-                        safe_mode_buffer += 1
-                    else:
-                        safe_mode_buffer = 1
                     if warning_status is True:
                         # code block
                         multi_activity_buffer = {
