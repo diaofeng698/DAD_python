@@ -6,6 +6,7 @@ wandb/
 SF_dataset
 video/
 img/
+function_test_result/
 # Prerequisites
 *.d
 

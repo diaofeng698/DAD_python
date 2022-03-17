@@ -1,7 +1,7 @@
 import os
 
 
-def sort_buffer(temp_buffer, alert_result, map, longest_frame=0, alert_conf = 0):
+def sort_buffer(temp_buffer, alert_result, map, longest_frame=0, alert_conf=0):
     for item_class, (item_frame, item_conf) in temp_buffer.items():
         if item_frame > longest_frame:
             longest_frame = item_frame
@@ -25,7 +25,7 @@ def output_alert(alert_result, longest_frame, alert_conf, map):
 
 if __name__ == '__main__':
     root = os.getcwd()
-    save_test_name = 'test_result10.txt'
+    save_test_name = 'test_result17.txt'
 # 更改结果保存文件名称
     save_test_folder = 'function_test_result'
     save_test_path = os.path.join(root, save_test_folder)
@@ -35,10 +35,15 @@ if __name__ == '__main__':
 
     model_path = 'weights_gray'
 # 配置模型路径 model loading path
-    index_to_class = {0: 'safe_driving', 1: 'eating', 2: 'drinking',
-                      3: 'smoking', 4: 'phone_interaction', 5: 'other_activity'}
+    index_to_class = {
+        0: 'safe_driving',
+        1: 'eating',
+        2: 'drinking',
+        3: 'smoking',
+        4: 'phone_interaction',
+        5: 'other_activity'}
 
-    class_to_index = {v:k for k, v in index_to_class.items()}
+    class_to_index = {v: k for k, v in index_to_class.items()}
 
     alert_list = ['smoking', 'drinking', 'eating', 'phone_interaction']
     safe_mode = 0  # 默认安全驾驶是 分类 0, safe driving is 0 by default
@@ -47,7 +52,8 @@ if __name__ == '__main__':
     reset_time = 2
     alert_time = 10
     buffer_time = 30
-    print(f'reset time range is {reset_time}s, alert time range is {alert_time}s, buffer time range is {buffer_time}s')
+    print(
+        f'reset time range is {reset_time}s, alert time range is {alert_time}s, buffer time range is {buffer_time}s')
 
     reset_frame = reset_time * fps
     alert_frame = alert_time * fps
@@ -63,8 +69,8 @@ if __name__ == '__main__':
 
     # 构造测试数据队列
 
-    activity_time_list = [('safe_driving', 5), ('eating', 4), ('drinking', 3), ('smoking', 2), ('phone_interaction', 11),
-                          ('other_activity', 60)]
+    activity_time_list = [('eating', 15), ('drinking', 15),('safe_driving', 1), ('drinking', 0), ('safe_driving', 0), (
+        'smoking', 0), ('phone_interaction', 0), ('safe_driving', 0), ('drinking', 0), ('eating', 0)]
     print(f'activity last time dict is {activity_time_list}')
     with open(save_test_route, 'a') as file:
         file.write(str(activity_time_list) + '\n')
@@ -87,9 +93,11 @@ if __name__ == '__main__':
         print(output_text)
         # TODO: 是否要添加置信度过滤 相当于跳过置信度低的一帧图片
         if conf >= conf_threshold:
+
             buffer_list.append((state_now, conf))
-            if len(buffer_list) == buffer_frame:
+            if len(buffer_list) == buffer_frame + 1:
                 buffer_list = buffer_list[1:]
+
             # 建立与buffer_list对应的buffer
             buffer = {}
             for (item_class, item_conf) in buffer_list:
@@ -106,22 +114,29 @@ if __name__ == '__main__':
                 # 如果<10s, 累加alert 动作时长， 看是否>=10s
                 # 如果出现相同时长，按mobile phone > eating > drinking> smoking 优先级选取
 
-                multi_activity_buffer = {k: v for k, v in buffer.items() if index_to_class[k] in alert_list}
+                multi_activity_buffer = {
+                    k: v for k, v in buffer.items() if index_to_class[k] in alert_list}
                 if len(multi_activity_buffer) != 0:
-                    max_time = max([item[0] for item in multi_activity_buffer.values()])
+                    max_time = max([item[0]
+                                   for item in multi_activity_buffer.values()])
                 if max_time >= alert_frame:
                     print('OK')
-                    alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                    alert_result, longest_frame, alert_conf = sort_buffer(
+                        multi_activity_buffer, class_to_index['smoking'], index_to_class)
                     # initial input lowest priority class to sort_buffer
-                    warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
+                    warning_status, alert_img_text = output_alert(
+                        alert_result, longest_frame, alert_conf, index_to_class)
                     save_text = 'single activity' + ' ' + alert_img_text
                 else:
-                    total_time = sum([item[0] for item in multi_activity_buffer.values()])
+                    total_time = sum([item[0]
+                                     for item in multi_activity_buffer.values()])
                     if total_time >= alert_frame:
                         print('ok')
-                        alert_result, longest_frame, alert_conf = sort_buffer(multi_activity_buffer, class_to_index['smoking'], index_to_class)
+                        alert_result, longest_frame, alert_conf = sort_buffer(
+                            multi_activity_buffer, class_to_index['smoking'], index_to_class)
                         # initial input lowest priority class to sort_buffer
-                        warning_status, alert_img_text = output_alert(alert_result, longest_frame, alert_conf, index_to_class)
+                        warning_status, alert_img_text = output_alert(
+                            alert_result, longest_frame, alert_conf, index_to_class)
                         save_text = 'multi  activity' + ' ' + alert_img_text
             else:
                 if state_previous == safe_mode:
@@ -133,7 +148,7 @@ if __name__ == '__main__':
                         warning_status = False
                         release_message = f'safe driving mode last for 10 frames, release warning'
                         output_text = release_message + ' ' + output_text
-                        #print(save_text)
+                        # print(save_text)
                     safe_mode_buffer -= 1  # 防止一直累加 上溢出
             state_previous = state_now
 
@@ -145,10 +160,3 @@ if __name__ == '__main__':
 
         frame_index += 1
     print(f'test in finished, result is saved at {save_test_route}')
-
-
-
-
-
-
-

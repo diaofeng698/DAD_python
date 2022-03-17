@@ -1,5 +1,5 @@
-[('smoking', 5), ('safe_driving', 2), ('drinking', 0), ('smoking', 0), ('phone_interaction', 0), ('other_activity', 0)]
-in 7, smoking lasts for 5s, safe_driving lasts for 2s, drinking lasts for 0s, smoking lasts for 0s, phone_interaction lasts for 0s, other_activity lasts for 0s, 
+[('smoking', 5), ('safe_driving', 2), ('drinking', 0), ('safe_driving', 0), ('smoking', 0), ('phone_interaction', 0), ('safe_driving', 0), ('drinking', 0), ('eating', 0)]
+in 7, smoking lasts for 5s, safe_driving lasts for 2s, drinking lasts for 0s, safe_driving lasts for 0s, smoking lasts for 0s, phone_interaction lasts for 0s, safe_driving lasts for 0s, drinking lasts for 0s, eating lasts for 0s, 
 current frame No.is 1, frame is smoking
 current frame No.is 2, frame is smoking
 current frame No.is 3, frame is smoking
